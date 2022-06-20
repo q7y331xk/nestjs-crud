@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import configOptions from './app-options/config-options';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { UserModule } from './user/user.module';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [ConfigModule.forRoot(configOptions),
@@ -18,8 +18,9 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
     synchronize: process.env.NODE_ENV === 'dev' ? true : false,
     namingStrategy: new SnakeNamingStrategy(),
     legacySpatialSupport: false,
-  }),],
-  controllers: [AppController],
-  providers: [AppService],
+  }),
+    UserModule,],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}

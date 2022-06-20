@@ -8,7 +8,12 @@ async function bootstrap() {
   console.log(`\t🎮 enter with:\t\thttp://localhost:${process.env.PORT}`);
   console.log();
   const app = await NestFactory.create(AppModule, { cors: true });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidUnknownValues: true,
+    forbidNonWhitelisted: true,
+    transform: true,
+  }));
   await app.listen(process.env.PORT);
 }
 bootstrap();
