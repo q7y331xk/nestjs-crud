@@ -4,11 +4,11 @@ import { Column, Entity } from "typeorm";
 
 @Entity()
 export class User extends Core {
-  @Length(3,20)
+  @Length(3, 20)
   @Column()
   name: string;
 
-  @Length(8,20)
+  @Length(8, 20)
   @Column()
-  pw: string;
+  password: string;
 }
