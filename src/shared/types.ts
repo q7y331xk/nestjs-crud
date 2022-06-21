@@ -9,11 +9,6 @@ type GenericObject = { [key: string]: any };
 
 const noData = { data: null };
 
-interface ResponseJsonConstructor {
-  result?: GenericObject;
-  message?: string;
-  statusCode?: number;
-}
 export class ResponseJson {
   constructor(result?: GenericObject, message?: string, statusCode?: number) {
     this.statusCode = statusCode;
