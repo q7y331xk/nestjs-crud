@@ -1,11 +1,11 @@
-import { ResponseSuccessJson, ResponseErrorJson } from './../shared/types';
+import { ResponseException } from './../shared/types';
+import { DefaultPromiseResponse, ResponseSuccess } from 'src/shared/types';
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ResponseJson } from 'src/shared/types';
 
 @Injectable()
 export class UserService {
@@ -14,31 +14,32 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<ResponseJson> {
+  async create(createUserDto: CreateUserDto): DefaultPromiseResponse {
     try {
       const userNew = this.userRepository.create(createUserDto);
       const userSaved = await this.userRepository.save(userNew);
-      return new ResponseSuccessJson(userSaved);
+      return new ResponseSuccess(userSaved);
     } catch (err) {
-      return new ResponseErrorJson(err);
+      return new ResponseException(err);
     }
   }
 
   async findAll() {
     try {
       const usersExist = await this.userRepository.find();
-      return new ResponseSuccessJson(usersExist);
+      return new ResponseSuccess(usersExist);
     } catch (err) {
-      return new ResponseErrorJson(err);
+      return new ResponseException(err);
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): DefaultPromiseResponse {
     try {
       const userExist = await this.userRepository.findOne({ where: { id } });
-      return new ResponseSuccessJson(userExist);
+      if (!userExist) throw 'no user exist'
+      return new ResponseSuccess(userExist);
     } catch (err) {
-      return new ResponseErrorJson(err);
+      return new ResponseException(err);
     }
   }
 
@@ -46,15 +47,15 @@ export class UserService {
     try {
       const userExist = await this.userRepository.findOne({ where: { id } });
       if (!userExist) {
-        throw ['no user exist', 404];
+        throw 'no user exist';
       }
       const userUpdate = await this.userRepository.update(
         userExist,
         updateUserDto,
       );
-      return new ResponseSuccessJson(userUpdate);
+      return new ResponseSuccess(userUpdate);
     } catch (err) {
-      return new ResponseErrorJson(...err);
+      return new ResponseException(err);
     }
   }
 
@@ -65,9 +66,9 @@ export class UserService {
         throw ['no user exist', 404];
       }
       const userRemoved = await this.userRepository.remove(userExist);
-      return new ResponseSuccessJson(userRemoved);
+      return new ResponseSuccess(userRemoved);
     } catch (err) {
-      return new ResponseErrorJson(err);
+      return new ResponseException(err);
     }
   }
 }

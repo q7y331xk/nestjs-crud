@@ -4,7 +4,6 @@ import configOptions from './app-options/config-options';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { UserModule } from './user/user.module';
-import { DataSource } from 'typeorm';
 
 @Module({
   imports: [ConfigModule.forRoot(configOptions),
@@ -19,8 +18,6 @@ import { DataSource } from 'typeorm';
     namingStrategy: new SnakeNamingStrategy(),
     legacySpatialSupport: false,
   }),
-    UserModule,],
+    UserModule,]
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class AppModule{}

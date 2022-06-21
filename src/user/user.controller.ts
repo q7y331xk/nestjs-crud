@@ -1,3 +1,4 @@
+import { DefaultPromiseResponse } from './../shared/types';
 import {
   Controller,
   Get,
@@ -6,19 +7,17 @@ import {
   Patch,
   Param,
   Delete,
-  Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ResponseJson } from 'src/shared/types';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<ResponseJson> {
+  create(@Body() createUserDto: CreateUserDto): DefaultPromiseResponse {
     return this.userService.create(createUserDto);
   }
 
