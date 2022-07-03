@@ -1,9 +1,10 @@
+import { SampleModule } from './sample/sample.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import configOptions from './app-options/config-options';
+import configOptions from './shared/app-options/config-options';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { UserModule } from './user/user.module';
+import { DefaultModule } from './default/default.module';
 
 @Module({
   imports: [ConfigModule.forRoot(configOptions),
@@ -18,6 +19,8 @@ import { UserModule } from './user/user.module';
     namingStrategy: new SnakeNamingStrategy(),
     legacySpatialSupport: false,
   }),
-    UserModule,]
+    DefaultModule,
+    SampleModule,
+    ]
 })
 export class AppModule{}
