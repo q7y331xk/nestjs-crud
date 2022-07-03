@@ -6,7 +6,7 @@ import { Column, Entity } from "typeorm";
 export class User extends Core {
   @Length(3, 20)
   @Column()
-  name: string;
+  username: string;
 
   @Length(8, 20)
   @Column()

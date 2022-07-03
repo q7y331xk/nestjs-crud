@@ -2,7 +2,7 @@ import Joi from 'joi';
 import envFilePath from './env-file-path';
 
 const JoiObject = Joi.object({
-  NODE_ENV: Joi.string().valid('dev', 'prod').required(),
+  NODE_ENV: Joi.string().valid('dev', 'stage', 'prod').required(),
   PORT: Joi.string().min(4).max(4).required(),
 });
 
